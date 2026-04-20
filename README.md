@@ -40,4 +40,5 @@ Služba vrací JSON skript ve struktuře
 Klíčové jsou hodnoty
 - P_PV = aktuální výkon FVE, maximální hodnota je 6000, minimální je 0
 - P_Load = aktuální celková spotřeba domácnosti. Vždy se jedná o zápornou hodnotu.
-- P_Grid = aktuální produkce/spotřeba elektřiny ze sítě, nebo do sítě distributora. Kladná hodnota znaměná spotřebu ze sítě, záporná produkce do sítě (přebytek spotřeby domácnosti z produkce FVE)- P_Akku = aktuální produkce/spotřeba elektřiny do/z baterií. Chová se stejně jako P_Grid. Momentálně není instalována.
+- P_Grid = aktuální produkce/spotřeba elektřiny ze sítě, nebo do sítě distributora. Kladná hodnota znaměná spotřebu ze sítě, záporná produkce do sítě (přebytek spotřeby domácnosti z produkce FVE)
+- P_Akku = aktuální produkce/spotřeba elektřiny do/z baterií. Chová se stejně jako P_Grid. Momentálně není instalována.
