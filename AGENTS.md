@@ -32,7 +32,7 @@ If tests are added later, place them under `tests/` and name them after the beha
 ## Commit & Pull Request Guidelines
 Current Git history uses short, lowercase commit subjects such as `initial version` and `first commit`. Keep commit messages brief, imperative, and focused on one change.
 
-Pull requests should include a clear summary, any config or endpoint changes, and a short terminal screenshot or sample output when UI formatting changes. Link related issues when applicable and note any manual verification performed.
+As this is a solo developer project, pull requests are not created. Changes are committed directly to the main branch.
 
 ## File Distribution
 Distribution will consist of copying the script to the user's home directory and setting the file permissions for execution.
