@@ -5,6 +5,17 @@ This repository is intentionally small. The main executable is [fve_monitor.sh](
 
 Keep new logic close to the script unless the project is intentionally expanded. If additional assets or helper scripts are added, place them in clearly named top-level directories such as `docs/`, `examples/`, or `scripts/`.
 
+## Core Feature Implementation
+
+The script polls a Fronius-style power-flow endpoint that returns a JSON structure. The key attributes used by the monitor are:
+
+- `P_PV`: Current PV generation power in watts. Minimum value is 0, maximum is 6000.
+- `P_Load`: Current total household consumption in watts. Always a negative value.
+- `P_Grid`: Current power flow to/from the grid in watts. Positive value indicates consumption from the grid, negative value indicates surplus power fed back to the grid (excess PV generation exceeds household consumption).
+- `P_Akku`: Current power flow to/from batteries in watts. Behaves the same as `P_Grid`. Not currently installed but may be added in the future.
+
+The script extracts these values from the JSON response path: `.site.P_PV`, `.site.P_Load`, and `.site.P_Grid`, and renders them as a terminal bar chart for real-time visualization.
+
 ## Build, Test, and Development Commands
 There is no build step; this is a Bash script.
 
