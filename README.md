@@ -42,3 +42,16 @@ Klíčové jsou hodnoty
 - P_Load = aktuální celková spotřeba domácnosti. Vždy se jedná o zápornou hodnotu.
 - P_Grid = aktuální produkce/spotřeba elektřiny ze sítě, nebo do sítě distributora. Kladná hodnota znaměná spotřebu ze sítě, záporná produkce do sítě (přebytek spotřeby domácnosti z produkce FVE)
 - P_Akku = aktuální produkce/spotřeba elektřiny do/z baterií. Chová se stejně jako P_Grid. Momentálně není instalována.
+
+## Vizualizace
+Skript zobrazuje hodnoty v terminálovém bar chartu s formátem: `[graf] P/L/G (kW)`.
+Graf má pevnou šířku `60` polí a každé pole odpovídá `100 W` (`6000 W / 60`), takže délka segmentů už není závislá na šířce terminálu. Pro lepší čitelnost používá jemné znaky `▏` pro vyplněná pole a `┊` pro nevyužitou kapacitu.
+
+Bar chart používá následující barvy:
+- **Zelená (█)**: Spotřeba pokrytá výrobou FVE.
+- **Modrá (█)**: Spotřeba nepokrytá výrobou (zobrazuje se pouze pokud je spotřeba vyšší než výroba).
+- **Žlutá (█)**: Nadbytečná výroba FVE (zobrazuje se pouze pokud je výroba vyšší než spotřeba).
+- **Šedá (░)**: Nevyužitá kapacita systému.
+
+Pokud je spotřeba nižší nebo rovna výrobě, zobrazí se celá spotřeba zeleně a přebytek žlutě.
+Pokud je spotřeba vyšší než výroba, zobrazí se pokrytá část zeleně a nepokrytá část modře (bez žluté barvy).
