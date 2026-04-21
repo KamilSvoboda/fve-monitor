@@ -5,14 +5,8 @@ MAX_POWER=6000
 INTERVAL=3
 BAR_CELLS=60
 CELL_POWER=$((MAX_POWER / BAR_CELLS))
-
-# Varianty znaků pro graf:
-# 1) Jemná linka:   FILLED_CHAR="╎" EMPTY_CHAR="┆"
-# 2) Tečkovaná:     FILLED_CHAR="¦" EMPTY_CHAR="┊"
-# 3) Minimalistická FILLED_CHAR=":" EMPTY_CHAR="."
-# 4) Výraznější:    FILLED_CHAR="▏" EMPTY_CHAR="·"
-FILLED_CHAR="▏"
-EMPTY_CHAR="┊"
+FILLED_CHAR="▋"
+EMPTY_CHAR="░"
 
 # ANSI barvy
 GREEN="\033[32m"           # spotřeba

@@ -45,7 +45,7 @@ Klíčové jsou hodnoty
 
 ## Vizualizace
 Skript zobrazuje hodnoty v terminálovém bar chartu s formátem: `[graf] P/L/G (kW)`.
-Graf má pevnou šířku `60` polí a každé pole odpovídá `100 W` (`6000 W / 60`), takže délka segmentů už není závislá na šířce terminálu. Pro lepší čitelnost používá jemné znaky `▏` pro vyplněná pole a `┊` pro nevyužitou kapacitu.
+Graf má pevnou šířku `60` polí a každé pole odpovídá `100 W` (`6000 W / 60`), takže délka segmentů už není závislá na šířce terminálu. Pro lepší čitelnost používá znaky `▋` pro vyplněná pole a `░` pro nevyužitou kapacitu.
 
 Bar chart používá následující barvy:
 - **Zelená (█)**: Spotřeba pokrytá výrobou FVE.
