@@ -55,8 +55,9 @@ draw_bar() {
     local covered_load uncovered_load export_load
     local covered_len uncovered_len export_len empty_len
     local covered_bar uncovered_bar export_bar empty_bar
-    local pv_kw load_kw grid_kw
-    local grid_color
+    local pv_kw load_kw export_kw
+    local load_color
+    local values_output=""
 
     # Nahradit čárky tečkami a převést na číselné hodnoty
     pv_w=$(normalize_number "$pv_w")
@@ -70,12 +71,12 @@ draw_bar() {
 
     pv_kw=$(format_kw "$pv_w")
     load_kw=$(format_kw "$load_w")
-    grid_kw=$(format_kw "$grid_w")
 
     # Vypočítat pokrytou spotřebu (zelená), nepokrytou spotřebu (červená) a export (žlutá)
     covered_load=$(LC_NUMERIC=C awk -v pv="$pv_w" -v load="$load_w" 'BEGIN {print (pv <= load) ? pv : load}')
     uncovered_load=$(LC_NUMERIC=C awk -v pv="$pv_w" -v load="$load_w" 'BEGIN {print (load > pv) ? load - pv : 0}')
     export_load=$(LC_NUMERIC=C awk -v pv="$pv_w" -v load="$load_w" 'BEGIN {print (pv > load) ? pv - load : 0}')
+    export_kw=$(format_kw "$export_load")
 
     covered_len=$(LC_NUMERIC=C awk -v load="$covered_load" -v cell="$CELL_POWER" 'BEGIN {printf "%d", ((load + (cell / 2)) / cell)}')
     uncovered_len=$(LC_NUMERIC=C awk -v load="$uncovered_load" -v cell="$CELL_POWER" 'BEGIN {printf "%d", ((load + (cell / 2)) / cell)}')
@@ -102,25 +103,33 @@ draw_bar() {
     export_bar=$(repeat_char "$export_len" "$FILLED_CHAR")
     empty_bar=$(repeat_char "$empty_len" "$EMPTY_CHAR")
 
-    # barva pro grid: záporné = export žlutě, kladné = import červeně
-    if (( $(LC_NUMERIC=C awk -v grid="$grid_w" 'BEGIN {print (grid < 0)}') )); then
-        grid_color=$YELLOW
+    # spotřeba je zeleně jen pokud ji FVE pokrývá celou, jinak modře
+    if (( $(LC_NUMERIC=C awk -v uncovered="$uncovered_load" 'BEGIN {print (uncovered > 0)}') )); then
+        load_color=$BLUE
     else
-        grid_color=$BLUE
+        load_color=$GREEN
     fi
 
-    # výpis s obarvenou spotřebovanou částí
-    printf "[%b%s%b%b%s%b%b%s%b%b%s%b] %s/%b%s%b/%b%s%b\n" \
+    values_output=$(printf "%b%s%b" "$load_color" "$load_kw" "$RESET")
+
+    if (( $(LC_NUMERIC=C awk -v pv="$pv_w" 'BEGIN {print (pv > 0)}') )); then
+        values_output+=$(printf "/%b%s%b" "$YELLOW" "$pv_kw" "$RESET")
+    fi
+
+    if (( $(LC_NUMERIC=C awk -v export="$export_load" 'BEGIN {print (export > 0)}') )); then
+        values_output+=$(printf " (%b+%s%b)" "$YELLOW" "$export_kw" "$RESET")
+    fi
+
+    printf "[%b%s%b%b%s%b%b%s%b%b%s%b] %s\n" \
         "$GREEN" "$covered_bar" "$RESET" \
         "$BLUE" "$uncovered_bar" "$RESET" \
         "$YELLOW" "$export_bar" "$RESET" \
         "$GRAY" "$empty_bar" "$RESET" \
-        "$pv_kw" "$GREEN" "$load_kw" "$RESET" \
-        "$grid_color" "$grid_kw" "$RESET"
+        "$values_output"
 }
 
 echo "Monitoring FVE (Ctrl+C pro ukončení)"
-echo "Formát: graf  P/L/G (kW) - ${BAR_CELLS} poli po ${CELL_POWER} W"
+echo "Formát: graf  spotřeba/výroba/přebytek (kW) - ${BAR_CELLS} poli po ${CELL_POWER} W"
 echo
 
 while true; do
